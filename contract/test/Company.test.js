@@ -4,11 +4,18 @@ require('chai').should();
 const MockIdentityProvider = artifacts.require('MockIdentityProvider');
 const Company = artifacts.require('Company');
 const MockDAI = artifacts.require('MockDAI');
+const Web3 = require('web3');
+const myweb3 = new Web3(web3.eth.currentProvider);
 
 const signTime = async (time, user) => {
-  const sig = await web3.eth.sign(
-    web3.utils.soliditySha3(web3.eth.abi.encodeParameter('uint256', time + '')),
+  const sig = await myweb3.eth.sign(myweb3.utils.soliditySha3(time + ''), user);
+  console.log(
+    myweb3.version,
+    'yo',
+    sig,
+    time,
     user,
+    myweb3.utils.soliditySha3(time + ''),
   );
   return sig;
 };
